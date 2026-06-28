@@ -4,7 +4,6 @@ export const sampleAppImages: AppImageEntry[] = [
   {
     id: "obsidian",
     name: "Obsidian",
-    category: "Productivity",
     version: "1.8.10",
     path: "~/Applications/AppImages/Obsidian.AppImage",
     executable: true,
@@ -12,7 +11,6 @@ export const sampleAppImages: AppImageEntry[] = [
   {
     id: "krita",
     name: "Krita",
-    category: "Media",
     version: "5.2.9",
     path: "~/Applications/AppImages/Krita.AppImage",
     executable: true,
@@ -20,7 +18,6 @@ export const sampleAppImages: AppImageEntry[] = [
   {
     id: "godot",
     name: "Godot Engine",
-    category: "Development",
     version: "4.4.1",
     path: "~/Applications/AppImages/Godot.AppImage",
     executable: false,
@@ -28,7 +25,6 @@ export const sampleAppImages: AppImageEntry[] = [
   {
     id: "heroic",
     name: "Heroic Games Launcher",
-    category: "Games",
     version: "2.17.0",
     path: "~/Applications/AppImages/Heroic.AppImage",
     executable: true,
