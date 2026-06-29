@@ -4,4 +4,6 @@ export type AppImageEntry = {
   version: string;
   path: string;
   executable: boolean;
+  importedAt: string;
+  lastOpenedAt?: string;
 };

@@ -17,3 +17,8 @@ pub fn launch_appimage(path: String) -> Result<(), AppImageError> {
 pub fn make_appimage_executable(path: String) -> Result<AppImageEntry, AppImageError> {
     usecases::make_appimage_executable(PathBuf::from(path))
 }
+
+#[tauri::command]
+pub fn open_appimage_folder(path: String) -> Result<(), AppImageError> {
+    usecases::open_appimage_folder(PathBuf::from(path))
+}

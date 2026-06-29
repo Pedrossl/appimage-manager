@@ -34,7 +34,6 @@ appimage-manager/
         components/              telas e componentes da biblioteca
         usecases/                regras de aplicacao da biblioteca
     shared/
-      data/                      dados temporarios ou mockados
       i18n/                      traducoes da interface
       types/                     tipos compartilhados
   src-tauri/                     camada desktop em Rust/Tauri
@@ -105,6 +104,8 @@ npm run build:deb
 
 O pacote `.deb` sera gerado pela pipeline do Tauri dentro de `src-tauri/target/release/bundle/deb`.
 
+Esse comando precisa ser executado em Linux ou em uma pipeline Linux. No macOS, o Tauri CLI gera apenas pacotes nativos de macOS, como `.app` e `.dmg`, entao o `.deb` deve ser validado em uma maquina Linux ou em CI.
+
 ## Estado Atual
 
 O projeto esta no inicio. A interface inicial ja tem:
@@ -116,7 +117,14 @@ O projeto esta no inicio. A interface inicial ja tem:
 - base de traducao para ingles, portugues e espanhol;
 - sidebar;
 - busca;
-- cards de AppImages com dados mockados;
+- estado vazio com acao de importacao;
+- importacao real de `.AppImage` via seletor de arquivo do Tauri;
+- biblioteca persistida localmente;
+- preferencias de idioma e tema persistidas localmente;
+- cards com abrir, corrigir permissao, abrir pasta e remover;
+- feedback visual com notificacoes discretas;
+- duplo clique no card para abrir;
+- `Enter` na busca para abrir o primeiro resultado e `Esc` para limpar a busca;
 - separacao inicial por componentes, usecases e tipos compartilhados.
 
 A base Rust/Tauri inicial ja tem:
@@ -124,7 +132,8 @@ A base Rust/Tauri inicial ja tem:
 - `inspect_appimage`: valida um caminho `.AppImage` e retorna nome, caminho, versao inicial e permissao de execucao.
 - `launch_appimage`: valida e executa um `.AppImage` quando ele possui permissao de execucao.
 - `make_appimage_executable`: adiciona permissao de execucao a um `.AppImage` e retorna os metadados atualizados.
+- `open_appimage_folder`: abre a pasta onde o `.AppImage` esta salvo.
 - organizacao em `models`, `usecases` e `commands` dentro de `src-tauri/src/appimage`.
 - configuracao de bundle inicial focada em `.deb`.
 
-As proximas etapas sao conectar o frontend com esses comandos Rust/Tauri para selecionar arquivos `.AppImage`, salvar a biblioteca local e executar os aplicativos.
+As proximas etapas sao evoluir a persistencia para SQLite ou arquivo de configuracao nativo, extrair icones/metadados dos AppImages e criar uma tela de detalhes.

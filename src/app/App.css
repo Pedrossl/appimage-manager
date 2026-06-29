@@ -1,6 +1,6 @@
 :root {
-  color: #142033;
-  background: #eef3f8;
+  color: #102018;
+  background: #edf6ef;
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
@@ -35,24 +35,24 @@ button {
 }
 
 .app-shell {
-  --app-bg: #eef3f8;
-  --panel-bg: #f8fafc;
+  --app-bg: #edf6ef;
+  --panel-bg: #f8fbf7;
   --surface-bg: #ffffff;
-  --surface-soft: #edf3f8;
-  --border: #d2deea;
-  --border-strong: #9fb2c6;
-  --text: #142033;
-  --muted: #65758a;
-  --sidebar-bg: #071a33;
-  --sidebar-surface: #102743;
-  --sidebar-border: #234767;
-  --sidebar-text: #f7fbff;
-  --sidebar-muted: #9eb5ca;
-  --primary: #0c5795;
-  --primary-hover: #0a477d;
+  --surface-soft: #eef7f0;
+  --border: #cfe1d2;
+  --border-strong: #91b79b;
+  --text: #102018;
+  --muted: #5d7365;
+  --sidebar-bg: #f6fbf5;
+  --sidebar-surface: #e8f5ea;
+  --sidebar-border: #bad8c1;
+  --sidebar-text: #102018;
+  --sidebar-muted: #5d7365;
+  --primary: #187145;
+  --primary-hover: #125936;
   --primary-text: #ffffff;
-  --accent: #248f96;
-  --accent-soft: #dff4f2;
+  --accent: #24966a;
+  --accent-soft: #dbf2e5;
   --warning: #9a5a17;
   --warning-soft: #f6e6cb;
   display: grid;
@@ -63,24 +63,24 @@ button {
 }
 
 .app-shell[data-theme="dark"] {
-  --app-bg: #071321;
-  --panel-bg: #0c1b2e;
-  --surface-bg: #10243a;
-  --surface-soft: #172f49;
-  --border: #25445f;
-  --border-strong: #3d6685;
-  --text: #f0f6fc;
-  --muted: #a6b9ca;
-  --sidebar-bg: #061022;
-  --sidebar-surface: #102946;
-  --sidebar-border: #254c6d;
-  --sidebar-text: #f7fbff;
-  --sidebar-muted: #9db7cc;
-  --primary: #3c96d4;
-  --primary-hover: #58a9e2;
-  --primary-text: #061022;
-  --accent: #62d0c8;
-  --accent-soft: #153d48;
+  --app-bg: #07150e;
+  --panel-bg: #0c1d14;
+  --surface-bg: #10261a;
+  --surface-soft: #173522;
+  --border: #244b33;
+  --border-strong: #3d7350;
+  --text: #eff8f1;
+  --muted: #a7bcae;
+  --sidebar-bg: #06120c;
+  --sidebar-surface: #10281a;
+  --sidebar-border: #28553a;
+  --sidebar-text: #f7fff9;
+  --sidebar-muted: #a2b9aa;
+  --primary: #62c58d;
+  --primary-hover: #7bd9a4;
+  --primary-text: #06120c;
+  --accent: #6dd6a0;
+  --accent-soft: #153d28;
   --warning: #f0bf7a;
   --warning-soft: #3b2d1b;
 }
@@ -90,6 +90,7 @@ button {
   flex-direction: column;
   gap: 24px;
   padding: 22px 18px;
+  border-right: 1px solid var(--sidebar-border);
   color: var(--sidebar-text);
   background: var(--sidebar-bg);
 }
@@ -248,6 +249,7 @@ button {
   border-radius: 8px;
   color: var(--text);
   background: var(--surface-bg);
+  white-space: nowrap;
 }
 
 .button:hover {
@@ -267,6 +269,11 @@ button {
 
 .button--ghost {
   color: var(--primary);
+  background: transparent;
+}
+
+.button--danger {
+  color: var(--warning);
   background: transparent;
 }
 
@@ -298,7 +305,7 @@ button {
 .app-card {
   display: grid;
   gap: 14px;
-  min-height: 176px;
+  min-height: 206px;
   padding: 16px;
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -351,11 +358,22 @@ button {
 }
 
 .app-card__footer {
+  display: grid;
+  gap: 12px;
+  align-self: end;
+}
+
+.app-card__actions {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  align-self: end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.app-card__actions .button {
+  min-height: 32px;
+  padding: 0 10px;
+  font-size: 0.8rem;
 }
 
 .status-pill {
@@ -378,7 +396,7 @@ button {
 .empty-state {
   margin: 0 28px 28px;
   max-width: 1424px;
-  padding: 34px;
+  padding: 46px 34px;
   border: 1px dashed var(--border-strong);
   border-radius: 8px;
   color: var(--text);
@@ -386,8 +404,79 @@ button {
   text-align: center;
 }
 
+.empty-state__icon {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 16px;
+  place-items: center;
+  border-radius: 8px;
+  color: var(--primary-text);
+  background: var(--primary);
+  font-weight: 760;
+}
+
+.empty-state h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
 .empty-state p {
+  max-width: 460px;
+  margin: 8px auto 20px;
   color: var(--muted);
+}
+
+.toast-viewport {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 20;
+  display: grid;
+  gap: 10px;
+  width: min(360px, calc(100vw - 36px));
+}
+
+.toast {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--primary);
+  border-radius: 8px;
+  color: var(--text);
+  background: var(--surface-bg);
+  box-shadow: 0 14px 36px rgb(5 18 34 / 18%);
+}
+
+.toast--success {
+  border-left-color: var(--accent);
+}
+
+.toast--error {
+  border-left-color: var(--warning);
+}
+
+.toast__title {
+  display: block;
+  font-size: 0.88rem;
+}
+
+.toast__description {
+  margin: 3px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  overflow-wrap: anywhere;
+}
+
+.toast__dismiss {
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 8px;
+  color: var(--muted);
+  background: transparent;
 }
 
 @media (min-width: 1481px) {
@@ -490,10 +579,14 @@ button {
 
   .app-card__footer {
     align-items: stretch;
+  }
+
+  .app-card__actions {
+    align-items: stretch;
     flex-direction: column;
   }
 
-  .app-card__footer .button {
+  .app-card__actions .button {
     width: 100%;
   }
 

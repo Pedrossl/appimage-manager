@@ -4,9 +4,20 @@ import type { AppTranslations } from "../../../shared/i18n/translations";
 type AppCardProps = {
   app: AppImageEntry;
   copy: AppTranslations["card"];
+  onLaunch: (app: AppImageEntry) => void;
+  onMakeExecutable: (app: AppImageEntry) => void;
+  onOpenFolder: (app: AppImageEntry) => void;
+  onRemove: (app: AppImageEntry) => void;
 };
 
-export function AppCard({ app, copy }: AppCardProps) {
+export function AppCard({
+  app,
+  copy,
+  onLaunch,
+  onMakeExecutable,
+  onOpenFolder,
+  onRemove,
+}: AppCardProps) {
   const initials = app.name
     .split(" ")
     .map((part) => part[0])
@@ -15,7 +26,10 @@ export function AppCard({ app, copy }: AppCardProps) {
     .toUpperCase();
 
   return (
-    <article className="app-card">
+    <article
+      className="app-card"
+      onDoubleClick={() => onLaunch(app)}
+    >
       <div className="app-card__top">
         <div className="app-card__icon" aria-hidden="true">
           {initials}
@@ -34,9 +48,29 @@ export function AppCard({ app, copy }: AppCardProps) {
         >
           {app.executable ? copy.ready : copy.needsPermission}
         </span>
-        <button className="button button--ghost" type="button">
-          {copy.open}
-        </button>
+        <div
+          className="app-card__actions"
+          onDoubleClick={(event) => event.stopPropagation()}
+        >
+          {!app.executable ? (
+            <button
+              className="button button--ghost"
+              type="button"
+              onClick={() => onMakeExecutable(app)}
+            >
+              {copy.fixPermission}
+            </button>
+          ) : null}
+          <button className="button button--ghost" type="button" onClick={() => onOpenFolder(app)}>
+            {copy.openFolder}
+          </button>
+          <button className="button button--danger" type="button" onClick={() => onRemove(app)}>
+            {copy.remove}
+          </button>
+          <button className="button button--primary" type="button" onClick={() => onLaunch(app)}>
+            {copy.open}
+          </button>
+        </div>
       </div>
     </article>
   );

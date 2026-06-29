@@ -67,6 +67,16 @@ pub fn make_appimage_executable(path: impl AsRef<Path>) -> Result<AppImageEntry,
     inspect_appimage(path)
 }
 
+pub fn open_appimage_folder(path: impl AsRef<Path>) -> Result<(), AppImageError> {
+    let entry = inspect_appimage(path)?;
+    let path = PathBuf::from(entry.path);
+    let folder = path.parent().ok_or_else(|| {
+        AppImageError::new("folder_not_found", "Could not find the AppImage folder.")
+    })?;
+
+    open_folder(folder)
+}
+
 fn normalize_path(path: &Path) -> Result<PathBuf, AppImageError> {
     if path.as_os_str().is_empty() {
         return Err(AppImageError::new("empty_path", "Path cannot be empty."));
@@ -179,5 +189,43 @@ fn apply_executable_permission(_path: &Path) -> Result<(), AppImageError> {
     Err(AppImageError::new(
         "unsupported_platform",
         "Execution permissions are only supported on Unix-like systems.",
+    ))
+}
+
+#[cfg(target_os = "linux")]
+fn open_folder(path: &Path) -> Result<(), AppImageError> {
+    Command::new("xdg-open")
+        .arg(path)
+        .spawn()
+        .map_err(|error| AppImageError::new("open_folder_error", error.to_string()))?;
+
+    Ok(())
+}
+
+#[cfg(target_os = "macos")]
+fn open_folder(path: &Path) -> Result<(), AppImageError> {
+    Command::new("open")
+        .arg(path)
+        .spawn()
+        .map_err(|error| AppImageError::new("open_folder_error", error.to_string()))?;
+
+    Ok(())
+}
+
+#[cfg(target_os = "windows")]
+fn open_folder(path: &Path) -> Result<(), AppImageError> {
+    Command::new("explorer")
+        .arg(path)
+        .spawn()
+        .map_err(|error| AppImageError::new("open_folder_error", error.to_string()))?;
+
+    Ok(())
+}
+
+#[cfg(not(any(target_os = "linux", target_os = "macos", target_os = "windows")))]
+fn open_folder(_path: &Path) -> Result<(), AppImageError> {
+    Err(AppImageError::new(
+        "unsupported_platform",
+        "Opening folders is not supported on this platform.",
     ))
 }
