@@ -5,6 +5,7 @@ Comment={{comment}}
 Exec={{exec}}
 Icon={{icon}}
 Terminal=false
+NoDisplay=false
 Categories={{categories}}
 Keywords=AppImage;Launcher;Applications;Desktop;Linux;
 StartupNotify=true
