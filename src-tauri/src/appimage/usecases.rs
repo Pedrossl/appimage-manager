@@ -1,4 +1,5 @@
-use std::fs::Metadata;
+use std::fs::{File, Metadata};
+use std::io::Read;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
@@ -19,6 +20,8 @@ pub fn inspect_appimage(path: impl AsRef<Path>) -> Result<AppImageEntry, AppImag
         ));
     }
 
+    validate_appimage_signature(&path)?;
+
     let name = get_app_name(&path)?;
 
     Ok(AppImageEntry {
@@ -31,6 +34,13 @@ pub fn inspect_appimage(path: impl AsRef<Path>) -> Result<AppImageEntry, AppImag
 }
 
 pub fn launch_appimage(path: impl AsRef<Path>) -> Result<(), AppImageError> {
+    if !cfg!(target_os = "linux") {
+        return Err(AppImageError::new(
+            "unsupported_platform",
+            "AppImages can only be launched on Linux.",
+        ));
+    }
+
     let entry = inspect_appimage(path)?;
 
     if !entry.executable {
@@ -102,6 +112,45 @@ fn validate_appimage_path(path: &Path) -> Result<(), AppImageError> {
         return Err(AppImageError::new(
             "file_not_found",
             "The selected AppImage does not exist.",
+        ));
+    }
+
+    Ok(())
+}
+
+fn validate_appimage_signature(path: &Path) -> Result<(), AppImageError> {
+    let mut header = [0_u8; 12];
+    let mut file = File::open(path).map_err(|error| {
+        if error.kind() == std::io::ErrorKind::PermissionDenied {
+            AppImageError::new(
+                "read_permission_denied",
+                "The selected AppImage cannot be read.",
+            )
+        } else {
+            AppImageError::new("read_error", error.to_string())
+        }
+    })?;
+
+    file.read_exact(&mut header).map_err(|error| {
+        if error.kind() == std::io::ErrorKind::UnexpectedEof {
+            AppImageError::new(
+                "invalid_appimage_signature",
+                "The selected file is too small to be a valid AppImage.",
+            )
+        } else {
+            AppImageError::new("read_error", error.to_string())
+        }
+    })?;
+
+    let has_elf_signature = header.starts_with(&[0x7f, b'E', b'L', b'F']);
+    let has_appimage_magic = header[8] == b'A'
+        && header[9] == b'I'
+        && (header[10] == 1 || header[10] == 2);
+
+    if !has_elf_signature || !has_appimage_magic {
+        return Err(AppImageError::new(
+            "invalid_appimage_signature",
+            "The selected file is not a valid AppImage.",
         ));
     }
 

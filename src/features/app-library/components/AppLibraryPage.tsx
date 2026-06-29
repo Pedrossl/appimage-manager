@@ -130,7 +130,11 @@ export function AppLibraryPage() {
       addToast(
         "error",
         copy.toast.errorTitle,
-        getErrorMessage(error, copy.toast.nativeRuntimeUnavailable),
+        getErrorMessage(
+          error,
+          copy.toast.nativeRuntimeUnavailable,
+          copy.toast.appImageErrors,
+        ),
       );
     }
   };
@@ -153,7 +157,11 @@ export function AppLibraryPage() {
       addToast(
         "error",
         copy.toast.errorTitle,
-        getErrorMessage(error, copy.toast.nativeRuntimeUnavailable),
+        getErrorMessage(
+          error,
+          copy.toast.nativeRuntimeUnavailable,
+          copy.toast.appImageErrors,
+        ),
       );
     }
   };
@@ -177,7 +185,11 @@ export function AppLibraryPage() {
       addToast(
         "error",
         copy.toast.errorTitle,
-        getErrorMessage(error, copy.toast.nativeRuntimeUnavailable),
+        getErrorMessage(
+          error,
+          copy.toast.nativeRuntimeUnavailable,
+          copy.toast.appImageErrors,
+        ),
       );
     }
   };
@@ -190,7 +202,11 @@ export function AppLibraryPage() {
       addToast(
         "error",
         copy.toast.errorTitle,
-        getErrorMessage(error, copy.toast.nativeRuntimeUnavailable),
+        getErrorMessage(
+          error,
+          copy.toast.nativeRuntimeUnavailable,
+          copy.toast.appImageErrors,
+        ),
       );
     }
   };
