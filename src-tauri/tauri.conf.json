@@ -13,8 +13,11 @@
     "windows": [
       {
         "title": "AppImage Manager",
-        "width": 800,
-        "height": 600
+        "width": 1100,
+        "height": 720,
+        "minWidth": 720,
+        "minHeight": 520,
+        "center": true
       }
     ],
     "security": {
@@ -24,6 +27,9 @@
   "bundle": {
     "active": true,
     "targets": ["deb"],
+    "category": "Utility",
+    "shortDescription": "AppImage desktop launcher",
+    "longDescription": "AppImage Manager helps you import, organize, validate permissions and launch AppImage applications on Linux.",
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
@@ -31,6 +37,14 @@
       "icons/icon.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ]
+    ],
+    "linux": {
+      "deb": {
+        "section": "utils",
+        "desktopTemplate": "templates/appimage-manager.desktop",
+        "postInstallScript": "scripts/postinst.sh",
+        "postRemoveScript": "scripts/postrm.sh"
+      }
+    }
   }
 }
