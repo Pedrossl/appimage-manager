@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.pedrolobato.appimagelauncher</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <name>AppImage Manager</name>
+  <summary>Import, organize and launch AppImage applications</summary>
+  <description>
+    <p>
+      AppImage Manager is a desktop launcher for Linux users who want to keep
+      their AppImage applications organized, validate permissions and launch
+      them from a simple library.
+    </p>
+  </description>
+  <launchable type="desktop-id">com.pedrolobato.appimagelauncher.desktop</launchable>
+  <categories>
+    <category>Utility</category>
+  </categories>
+  <url type="homepage">https://github.com/pedrolobato/appimage-manager</url>
+  <releases>
+    <release version="0.1.0" date="2026-06-29">
+      <description>
+        <p>Initial Flatpak packaging support.</p>
+      </description>
+    </release>
+  </releases>
+  <content_rating type="oars-1.1" />
+</component>

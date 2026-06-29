@@ -1,0 +1,44 @@
+app-id: com.pedrolobato.appimagelauncher
+runtime: org.gnome.Platform
+runtime-version: "48"
+sdk: org.gnome.Sdk
+command: appimage-manager
+
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.node20
+  - org.freedesktop.Sdk.Extension.rust-stable
+
+finish-args:
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --share=ipc
+  - --device=dri
+  - --filesystem=home
+  - --talk-name=org.freedesktop.Flatpak
+
+build-options:
+  append-path: /usr/lib/sdk/node20/bin:/usr/lib/sdk/rust-stable/bin
+  env:
+    CARGO_HOME: /run/build/appimage-manager/cargo
+    npm_config_cache: /run/build/appimage-manager/npm-cache
+
+modules:
+  - name: appimage-manager
+    buildsystem: simple
+    build-commands:
+      - npm ci
+      - npm run build
+      - cargo build --release --manifest-path src-tauri/Cargo.toml
+      - install -Dm755 src-tauri/target/release/appimage-manager /app/bin/appimage-manager
+      - install -Dm644 flatpak/com.pedrolobato.appimagelauncher.desktop /app/share/applications/com.pedrolobato.appimagelauncher.desktop
+      - install -Dm644 flatpak/com.pedrolobato.appimagelauncher.metainfo.xml /app/share/metainfo/com.pedrolobato.appimagelauncher.metainfo.xml
+      - install -Dm644 public/logo.svg /app/share/icons/hicolor/scalable/apps/com.pedrolobato.appimagelauncher.svg
+    sources:
+      - type: dir
+        path: ..
+        skip:
+          - .git
+          - dist
+          - node_modules
+          - flatpak-build
+          - src-tauri/target

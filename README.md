@@ -20,7 +20,8 @@ A ideia do projeto e criar uma experiencia parecida com launchers como Lutris: o
 - TypeScript: tipagem do frontend e melhor manutencao.
 - Rust: comandos nativos do Tauri, acesso ao sistema de arquivos e execucao dos AppImages.
 - Vite: servidor de desenvolvimento e build do frontend.
-- Debian package: primeiro formato de distribuicao planejado para Linux.
+- Debian package: primeiro formato de distribuicao para Linux.
+- Flatpak: formato planejado para Fedora, Arch, openSUSE e outras distribuicoes.
 
 ## Estrutura
 
@@ -37,6 +38,7 @@ appimage-manager/
       i18n/                      traducoes da interface
       types/                     tipos compartilhados
   src-tauri/                     camada desktop em Rust/Tauri
+  flatpak/                       manifesto e metadados para empacotamento Flatpak
   package.json                   scripts e dependencias do frontend
   vite.config.ts                 configuracao do Vite
 ```
@@ -106,12 +108,52 @@ O pacote `.deb` sera gerado pela pipeline do Tauri dentro de `src-tauri/target/r
 
 Esse comando precisa ser executado em Linux ou em uma pipeline Linux. No macOS, o Tauri CLI gera apenas pacotes nativos de macOS, como `.app` e `.dmg`, entao o `.deb` deve ser validado em uma maquina Linux ou em CI.
 
+## Gerar Flatpak
+
+O projeto tambem possui um manifesto inicial em:
+
+```txt
+flatpak/com.pedrolobato.appimagelauncher.yml
+```
+
+No Debian, instale as ferramentas:
+
+```bash
+sudo apt install flatpak flatpak-builder
+```
+
+Adicione o Flathub, se ainda nao estiver configurado:
+
+```bash
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+```
+
+Gerar build Flatpak local:
+
+```bash
+npm run build:flatpak
+```
+
+Gerar e instalar localmente para teste:
+
+```bash
+npm run install:flatpak
+```
+
+Depois abra pelo menu de aplicativos ou pelo terminal:
+
+```bash
+flatpak run com.pedrolobato.appimagelauncher
+```
+
+Para distribuir fora de uma loja, o ideal e gerar um bundle `.flatpak` ou criar um repositorio Flatpak. Para publicacao mais profissional, o caminho natural e preparar o manifesto para o Flathub.
+
 ## Estado Atual
 
 O projeto esta no inicio. A interface inicial ja tem:
 
 - layout de launcher desktop;
-- identidade visual puxada para azul escuro;
+- identidade visual puxada para verde;
 - logo do app aplicado no favicon e nos icones Linux do Tauri;
 - tema normal e dark mode;
 - base de traducao para ingles, portugues e espanhol;
@@ -135,5 +177,6 @@ A base Rust/Tauri inicial ja tem:
 - `open_appimage_folder`: abre a pasta onde o `.AppImage` esta salvo.
 - organizacao em `models`, `usecases` e `commands` dentro de `src-tauri/src/appimage`.
 - configuracao de bundle inicial focada em `.deb`.
+- manifesto inicial de Flatpak em `flatpak/`.
 
 As proximas etapas sao evoluir a persistencia para SQLite ou arquivo de configuracao nativo, extrair icones/metadados dos AppImages e criar uma tela de detalhes.

@@ -51,7 +51,20 @@ pub fn launch_appimage(path: impl AsRef<Path>) -> Result<(), AppImageError> {
     }
 
     let path = PathBuf::from(entry.path);
-    let mut command = Command::new(&path);
+    spawn_appimage(&path)?;
+
+    Ok(())
+}
+
+#[cfg(target_os = "linux")]
+fn spawn_appimage(path: &Path) -> Result<(), AppImageError> {
+    let mut command = if is_running_inside_flatpak() {
+        let mut command = Command::new("flatpak-spawn");
+        command.arg("--host").arg(path);
+        command
+    } else {
+        Command::new(path)
+    };
 
     if let Some(parent) = path.parent() {
         command.current_dir(parent);
@@ -62,6 +75,14 @@ pub fn launch_appimage(path: impl AsRef<Path>) -> Result<(), AppImageError> {
         .map_err(|error| AppImageError::new("launch_error", error.to_string()))?;
 
     Ok(())
+}
+
+#[cfg(not(target_os = "linux"))]
+fn spawn_appimage(_path: &Path) -> Result<(), AppImageError> {
+    Err(AppImageError::new(
+        "unsupported_platform",
+        "AppImages can only be launched on Linux.",
+    ))
 }
 
 pub fn make_appimage_executable(path: impl AsRef<Path>) -> Result<AppImageEntry, AppImageError> {
@@ -243,12 +264,26 @@ fn apply_executable_permission(_path: &Path) -> Result<(), AppImageError> {
 
 #[cfg(target_os = "linux")]
 fn open_folder(path: &Path) -> Result<(), AppImageError> {
-    Command::new("xdg-open")
-        .arg(path)
+    let mut command = if is_running_inside_flatpak() {
+        let mut command = Command::new("flatpak-spawn");
+        command.arg("--host").arg("xdg-open").arg(path);
+        command
+    } else {
+        let mut command = Command::new("xdg-open");
+        command.arg(path);
+        command
+    };
+
+    command
         .spawn()
         .map_err(|error| AppImageError::new("open_folder_error", error.to_string()))?;
 
     Ok(())
+}
+
+#[cfg(target_os = "linux")]
+fn is_running_inside_flatpak() -> bool {
+    std::env::var_os("FLATPAK_ID").is_some()
 }
 
 #[cfg(target_os = "macos")]

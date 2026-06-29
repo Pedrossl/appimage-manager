@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=AppImage Manager
+Comment=Import, organize and launch AppImage applications
+Exec=appimage-manager
+Icon=com.pedrolobato.appimagelauncher
+Terminal=false
+NoDisplay=false
+Categories=Utility;
+Keywords=AppImage;Launcher;Applications;Desktop;Linux;
+StartupNotify=true
