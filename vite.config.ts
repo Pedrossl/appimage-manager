@@ -24,7 +24,7 @@ export default defineConfig(async () => ({
         }
       : undefined,
     watch: {
-      ignored: ["**/src-tauri/**"],
+      ignored: ["**/src-tauri/**", "**/flatpak-build/**", "**/.flatpak-builder/**"],
     },
   },
 }));

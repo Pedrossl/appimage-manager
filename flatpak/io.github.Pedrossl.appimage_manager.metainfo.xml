@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.Pedrossl.appimage_manager</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <name>AppImage Manager</name>
+  <summary>Import, organize and launch AppImage applications</summary>
+  <description>
+    <p>
+      AppImage Manager is a desktop launcher for Linux users who want to keep
+      their AppImage applications organized, validate permissions and launch
+      them from a simple library.
+    </p>
+    <p>Features include:</p>
+    <ul>
+      <li>Import .AppImage files into a local library</li>
+      <li>Detect and fix execution permissions</li>
+      <li>Launch AppImages with a single click or double-click</li>
+      <li>Mark favorite apps for quick access</li>
+      <li>Search across your library instantly</li>
+      <li>Open the folder containing any AppImage</li>
+      <li>Dark mode and multi-language support (English, Portuguese, Spanish)</li>
+    </ul>
+  </description>
+  <launchable type="desktop-id">io.github.Pedrossl.appimage_manager.desktop</launchable>
+  <categories>
+    <category>Utility</category>
+    <category>System</category>
+  </categories>
+  <keywords>
+    <keyword>AppImage</keyword>
+    <keyword>Launcher</keyword>
+    <keyword>Linux</keyword>
+    <keyword>Applications</keyword>
+  </keywords>
+  <url type="homepage">https://github.com/Pedrossl/appimage-manager</url>
+  <url type="bugtracker">https://github.com/Pedrossl/appimage-manager/issues</url>
+  <screenshots>
+    <screenshot type="default">
+      <caption>AppImage library showing a registered application</caption>
+      <image type="source" width="1100" height="720">https://raw.githubusercontent.com/Pedrossl/appimage-manager/main/flatpak/screenshot-main.png</image>
+    </screenshot>
+  </screenshots>
+  <releases>
+    <release version="0.1.0" date="2026-07-04">
+      <description>
+        <p>Initial release with AppImage library management, permission handling and Flatpak packaging.</p>
+      </description>
+    </release>
+  </releases>
+  <content_rating type="oars-1.1" />
+  <developer id="io.github.pedrossl">
+    <name>Pedro Lobato</name>
+  </developer>
+</component>

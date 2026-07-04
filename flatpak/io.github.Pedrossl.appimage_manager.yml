@@ -1,6 +1,6 @@
-app-id: com.pedrolobato.appimagelauncher
+app-id: io.github.Pedrossl.appimage_manager
 runtime: org.gnome.Platform
-runtime-version: "48"
+runtime-version: "47"
 sdk: org.gnome.Sdk
 command: appimage-manager
 
@@ -17,24 +17,25 @@ finish-args:
   - --talk-name=org.freedesktop.Flatpak
 
 build-options:
-  build-args:
-    - --share=network
   append-path: /usr/lib/sdk/node20/bin:/usr/lib/sdk/rust-stable/bin
   env:
     CARGO_HOME: /run/build/appimage-manager/cargo
+    CARGO_NET_OFFLINE: "true"
     npm_config_cache: /run/build/appimage-manager/npm-cache
+    npm_config_offline: "true"
 
 modules:
   - name: appimage-manager
     buildsystem: simple
     build-commands:
-      - npm ci
+      - npm ci --offline
       - npm run build
-      - cargo build --release --manifest-path src-tauri/Cargo.toml
+      - cargo build --release --manifest-path src-tauri/Cargo.toml --offline
       - install -Dm755 src-tauri/target/release/appimage-manager /app/bin/appimage-manager
-      - install -Dm644 flatpak/com.pedrolobato.appimagelauncher.desktop /app/share/applications/com.pedrolobato.appimagelauncher.desktop
-      - install -Dm644 flatpak/com.pedrolobato.appimagelauncher.metainfo.xml /app/share/metainfo/com.pedrolobato.appimagelauncher.metainfo.xml
-      - install -Dm644 src-tauri/icons/128x128.png /app/share/icons/hicolor/128x128/apps/com.pedrolobato.appimagelauncher.png
+      - install -Dm644 flatpak/io.github.Pedrossl.appimage_manager.desktop /app/share/applications/io.github.Pedrossl.appimage_manager.desktop
+      - install -Dm644 flatpak/io.github.Pedrossl.appimage_manager.metainfo.xml /app/share/metainfo/io.github.Pedrossl.appimage_manager.metainfo.xml
+      - install -Dm644 src-tauri/icons/128x128.png /app/share/icons/hicolor/128x128/apps/io.github.Pedrossl.appimage_manager.png
+      - install -Dm644 src-tauri/icons/128x128@2x.png /app/share/icons/hicolor/256x256/apps/io.github.Pedrossl.appimage_manager.png
     sources:
       - type: dir
         path: ..
@@ -44,3 +45,6 @@ modules:
           - node_modules
           - flatpak-build
           - src-tauri/target
+          - .flatpak-builder
+      - node-sources.json
+      - cargo-sources.json
